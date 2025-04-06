@@ -18,10 +18,10 @@ limitations. But it's an academic solver at its core. Unlike proprietary industr
 tools, it knows only about materials and fields,
 without high-level concepts such as waveguides, circuit boards, connnectors, vias,
 etc. These are modeled from creating (or importing) geometrical shapes by programming.
-Similarly, analyze or interpreting simulation data must be done by the users
-themselves in their own postprocessing code (thankfully, once with a circuit's
-frequency response is obtained, called S-paremeters, a wide variety of circuit tools
-are available to analyze and simulate them, which we will cover later).
+Similarly, analyzing or interpreting simulation data must be done by the users
+themselves in their own postprocessing code. Thankfully, once with a circuit's
+frequency response (known as its S-parameters) is obtained, a wide variety of
+circuit tools are available to analyze and simulate them, which we will cover later.
 
 .. image:: images/Design_Workflow.svg
    :width: 80%
@@ -45,39 +45,40 @@ Workflow of FDTD
 The workflow of any openEMS simulation boils down to the following.
 
 1. **3D Modeling**: First, create an empty simulation box and start building
-   3D objects. Since these objects must be built from simple geometrical shapes
-   by programming.
+   3D objects. Objects are built from simple geometrical shapes programmatically.
 
-2. **Meshing**: Next, one creates a 3D Cartesian mesh (Yee's cells) which
-   determines how the box is discretized in a simulation run. Correct and optimized
-   mesh can ensure or improve numerical accuracy, while suboptimal incorrect mesh
-   can induce a loss of precision or instability (blow-ups) in the simulation.
-   Problem often occurs while trying to align the model and the mesh, so the model
-   must be co-designed with mesh coordinates in mind. 3D modeling and meshing is
-   usually the most labor-intensive part of the simulation.
+2. **Meshing**: Next, one creates a 3D Cartesian mesh, which determines how the
+   simulation box is discretized into small rectangular cuboids, known as Yee's
+   cells. They're the basic unit of computation in a simulation run. Correct and
+   optimized mesh can ensure or improve numerical accuracy, while suboptimal or
+   incorrect mesh can create a loss of precision or induce instability (blow-ups)
+   in the simulation. Problem often occurs while trying to align the model and
+   the mesh, so the model must be co-designed with mesh coordinates in mind. 3D
+   modeling and meshing is usually the most labor-intensive part of the simulation.
 
-3. **Port and Excitation**: Next, create one or more port, with at least one for
-   applying the excitation signal of choice. A Gaussian pulse is usually used
-   as it provides a broadband signal without discontinuous jumps, which can create
-   numerical problems, but with no loss of generality. Once the frequency response
-   is obtained, linear circuit tools can analyze their behaviors under other inputs.
-   Once the simulation is started, the electric or magnetic fields at the cells around
-   the excitation port is filled with initial values which is then evolved over time,
+3. **Port and Excitation**: Next, create one or more ports. At one port, apply
+   the excitation signal of your choice. A Gaussian pulse is the standard here, as
+   it provides a broadband signal without discontinuous jumps, which may create
+   numerical problems. Once the frequency response is obtained, linear circuit
+   tools can analyze their behaviors under other inputs, so there's no loss of
+   generality. Once the simulation is started, the electric or magnetic fields
+   at the cells around the excitation port is filled with initial values which
+   are then evolved over time.
 
 4. **Boundary Conditions**: Furthermore, since the simulation box has a finite size,
    we must decide what to do once the E&M field reaches the edge of the box by
    selecting the appropriate boundary conditions.
 
-5. **Simulation Run**: Electromagnetic energy is injected by an excitation port until
-   the energy in the box decays to zero. Finally, time-domain waveforms are obtained.
-   Frequency-domain S-parameters (i.e. frequency response) are then calculated from
-   time-domain data. Although FDTD is a time-domain method, the wide use of S-parameters
-   often makes frequency domain data more useful.
-   Optionally, openEMS can also dump the raw 3D fields during the simulation, which can
-   be used for visualization and debugging).
+5. **Simulation Run**: Electromagnetic energy is injected by an excitation port
+   until total energy in the box decays to zero. Time-domain waveforms are obtained
+   after the simulation ends. Frequency responses (i.e. S-parameters) are then
+   calculated from time-domain data. Although FDTD is a time-domain method, the
+   wide use of S-parameters in RF/microwave circuit analysis often makes frequency
+   domain data more useful.  Optionally, openEMS can also dump the raw 3D fields
+   during the simulation, which can be used for visualization and debugging.
 
-6. **Data Analysis**: openEMS itself is only a field solver, not a material
-   characterization or circuit analysis tool (with one exception of antenna
+6. **Data Analysis**: openEMS itself is only a field solver, not a structure
+   characterization or circuit analysis tool (with the exception of antenna
    radiation pattern analysis). It's up to the users to interpret the data
    using various third-party libraries and tools, such as textbook formulas,
    numerical fitting, Python library ``scikit-rf``, :program:`SignalIntegrity`

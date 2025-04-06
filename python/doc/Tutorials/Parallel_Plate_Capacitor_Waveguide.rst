@@ -769,28 +769,28 @@ to the box, creating the illusion of an infinite-size free space.
 
 Two kinds of Absorbing Boundary Conditions are implemented in openEMS.
 
-#. *Mur's Boundary Condition (MUR)* Mur's Boundary Condition is a
+#. *Mur's Boundary Condition (MUR)*. Mur's Boundary Condition is a
    first-generation boundary condition purely defined by differential
    equations, originally invented by Gerrit Mur in the 1980s. It has
-   a moderate computational overhead, but it can also absorb the
-   E&M wave orthogonal to the boundary with a known phase velocity
-   (e.g. the speed of light). Thus, reflections may cause errors
-   if strong radiation exists.
+   a moderate computational overhead, but it works only if the E&M wave
+   is orthogonal to the boundary and has a well-defined phase velocity
+   (e.g. the speed of light). Thus, reflections may cause errors if
+   strong radiation exists due to imperfect absorption.
 
 #. *Perfect Matched Layer (PML)*. Perfect Matched Layer is the
    second-generation boundary condition proposed in the 1990s, modeling
    the behavior of a hypothetical E&M wave-absorbing material. Unlike
-   Mur's ABC, PML occupies some physical cells in the simulation box,
-   though the actual boundary at the true edge remains PEC.
+   Mur's ABC, PML occupies some physical cells in the simulation box
+   (the actual boundary at the true edge remains PEC.).
    This mimics the foams on the wall of an anechoic chamber in EMC test
    labs.
 
    PML is a more effective absorber and is easy to use, but it has the
    highest computational overhead (especially in openEMS, due to suboptimal
    implementation). Avoid it if efficiency is critical (e.g. only use
-   PML at the simulation box's face hit by radiation, and use MUR for
-   other boundaries). Intrusion of fringe fields and evanescent waves
-   into the PML can destabilize it. Radiating structures must be kept
+   PML at the simulation box's face directly hit by radiation, and use
+   MUR for other boundaries). Intrusion of fringe fields and evanescent
+   waves into the PML can destabilize it. Radiating structures must be kept
    a distance of :math:`\lambda / 4`.
 
 .. important::
@@ -1469,7 +1469,7 @@ via:
 
    Z = Z_0 \frac{1 + \Gamma }{1 - \Gamma}
 
-For convenience, calculating the impedance seen by a port via the total
+Nevetheless, directly calculating the impedance seen by a port via the total
 voltage ``uf_tot`` and total current ``if_tot`` attributes of the port object.
 The following example plot the impedance seen by port 1. Like S-parameters,
 all impedances are also complex numbers, so we are only looking at its
@@ -1686,10 +1686,12 @@ code::
 
 ``.s1p`` file
 ..............
-The ``.s2p`` file already contains the S-parameter `S_{11}`, so there's no need to create
-a separate 1-port Touchstone file. But for completeness, the Touchstone file for 1-port
-measurements has the suffix ``.s1p``. Its format is similar: at each frequency point, one
-writes a new line with parameters order of ``frequency``, ``s11_real``, ``s11_imag``::
+The ``.s2p`` file already contains the S-parameter :math:`S_{11}`, so
+there's no need to create a separate 1-port Touchstone file. But for
+completeness, the Touchstone file for 1-port measurements has the
+suffix ``.s1p``. Its format is similar: at each frequency point, one
+writes a new line with parameters order of ``frequency``, ``s11_real``,
+``s11_imag``::
 
     # determine a file name
     s1pname = filepath.with_suffix(".s1p").name
