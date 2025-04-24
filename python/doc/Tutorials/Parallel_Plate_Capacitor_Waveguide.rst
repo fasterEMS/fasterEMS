@@ -565,7 +565,7 @@ Several kinds of dump boxes exist.
 #. Frequency-domain dumps of electric field, auxiliary magnetic field,
    electric conduction current, total current density, electric displacement
    field, and magnetic field (flux density), numbered from ``10`` to ``15``.
-#. Specific Absorption Rate (SAR) for biological E&M radiation exposure analysis.
+#. Specific Absorption Rate (SAR) for biological EM radiation exposure analysis.
 #. Near-Field to Far-Field Transformation (NF2FF) for antenna analysis
    (special setup required, via :meth:`openEMS.openEMS.CreateNF2FFBox` and a
    separate post-processing tool).
@@ -639,8 +639,8 @@ at this region.
 Select the Right Port Type
 """"""""""""""""""""""""""""
 
-In openEMS, ports are ideal sources of E&M fields, but they are not ideal
-*launchers* of E&M waves into structures due to a discontinuity at the
+In openEMS, ports are ideal sources of EM fields, but they are not ideal
+*launchers* of EM waves into structures due to a discontinuity at the
 boundary between the port and the structure.
 If port placement is not optimized,
 this region of discontinuity may introduce artifacts such
@@ -673,8 +673,8 @@ waveguides (``AddCircWaveGuidePort.m``) ports.
 
 .. note::
    Like physical ports on real devices, the virtual ports in openEMS are not
-   perfect. They're ideal sources of E&M fields, but they are not ideal
-   *launchers* of E&M waves into structures. A port creates a region of
+   perfect. They're ideal sources of EM fields, but they are not ideal
+   *launchers* of EM waves into structures. A port creates a region of
    discontinuity, so they may introduce artifacts.
    Optimizing the placement and implementation of a port reduces artifacts.
    Alternatively, these artifacts
@@ -872,7 +872,7 @@ the six faces of the box: ``x_min``, ``x_max``, ``y_min``, ``y_max``,
 Reflecting (Dirichlet) Boundary Conditions
 """""""""""""""""""""""""""""""""""""""""""
 
-If the finite nature of the simulation box and the reflection of E&M waves at
+If the finite nature of the simulation box and the reflection of EM waves at
 the boundaries are acceptable, reflecting boundary conditions offer a simple
 zero-overhead solution. They efficiently model structures inside metal
 enclosures, above a ground plane, or with an electric or magnetic field
@@ -928,15 +928,17 @@ In open-boundary problems, such as antennas or structures with radiation
 loss, *Absorbing Boundary Conditions (ABC)* must be used to suppress
 reflections to prevent spurious simulation results. At its boundaries, the
 electromagnetic waves are absorbed and dissipated without reflecting back,
-creating the illusion of an infinitely large free space.
+creating the illusion of an infinitely large free space. If PEC and PMC
+are analogous to a shorted or opened transmission line, the ABC is analogous
+to a termination resistor.
 
 In general, these simulations should use a simulation box larger than the
 structure to avoid intrusion of strong fringe fields at the boundary.
 However, deliberately running a transmission line into the PML (defined
-below) can be used as a perfect termination resistor. This allows one
+below) can be used as a perfect termination. This allows one
 to terminate a transmission line without knowing its characteristic
 impedance, enabling impedance measurement. In fact, openEMS's microstrip
-ports doesn't create a lumped termination resistor by default, expecting
+ports don't create a lumped termination resistor by default, expecting
 users to place them into the PML at boundaries.
 
 .. figure:: images/Parallel_Plate_Capacitor_Waveguide/anechoic_chamber.jpg
@@ -952,7 +954,7 @@ Two kinds of Absorbing Boundary Conditions are implemented in openEMS.
 #. **Mur's Boundary Condition (MUR)**. This is a
    first-generation boundary condition purely defined by differential
    equations, originally invented by Gerrit Mur in the 1980s. It has
-   a moderate computational overhead, but it works only if the E&M wave
+   a moderate computational overhead, but it works only if the EM wave
    is traveling at a direction orthogonal to the boundary, with a
    well-defined phase velocity (e.g. the speed of light). Thus,
    reflections may cause errors if strong radiation exists due to
@@ -960,7 +962,7 @@ Two kinds of Absorbing Boundary Conditions are implemented in openEMS.
 
 #. **Perfectly Matched Layer (PML)**. This is the
    second-generation boundary condition proposed in the 1990s, modeling
-   the behavior of a hypothetical E&M wave-absorbing material. Unlike
+   the behavior of a hypothetical EM wave-absorbing material. Unlike
    Mur's ABC, PML occupies some physical cells in the simulation box
    (the actual boundary at the true edge remains PEC).
    This mimics the wave-absorbing foam on the wall of an anechoic chamber
@@ -1388,7 +1390,7 @@ simulation terminates.
 
 Conversely, incorrect or unphysical
 modeling or meshing may destabilize the simulation, causing
-*blow-ups*. The simulation box's E&M field strength diverges over
+*blow-ups*. The simulation box's EM field strength diverges over
 time due to the accumulation of small numerical errors. The
 total energy may gradually increase unbounded, eventually
 reaching the floating-point infinity.
@@ -1399,7 +1401,7 @@ Note that the displayed energy value is only a rough, indicative estimate.
 Factors such as material properties are ignored for simulation speed.
 For resonating structures (such as cavity resonators and antennas),
 the energy indicator may fluctuate up and down repeatedly
-due to the oscillating E&M field strengths. The convergence time
+due to the oscillating EM field strengths. The convergence time
 required for low-loss (high Q) resonators which have minimal energy
 dissipation, is notoriously long in FDTD simulations. The absence
 of termination resistances or Absorbing Boundary Conditions
@@ -3338,7 +3340,7 @@ educated guesses:
    when the excitation frequency is high enough. For example,
    the book [10]_ lists four possible high-order microstrip modes.
    In fact, unrealistic excitation of high-order modes is fairly common
-   in E&M field solvers as unphysical excitation signals or
+   in EM field solvers as unphysical excitation signals or
    port placements are easily created. Be sure to watch for it,
    if the simulation results don't seem to make sense.
 
