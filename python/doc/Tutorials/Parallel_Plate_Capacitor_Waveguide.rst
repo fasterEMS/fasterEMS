@@ -2459,16 +2459,20 @@ devices using them.
 
 The Python package :program:`SignalIntegrity`, designed for signal
 integrity and eye diagram simulations from the ground up, is a rare
-exception.  It's developed by Pete Pupalaikis, a former signal
+exception. It's developed by Pete Pupalaikis, a former signal
 integrity expert at LeCroy.
 
 .. seealso::
-   The software's internal theory of operation is also published almost
+   **Book.** The software's internal theory of operation is also published almost
    in full in the textbook *S-Parameters for Signal Integrity* [6]_. Each
    concept is accomplished by both formulas and executable code, making
    it an invaluable reference in this field. The author of this tutorial
    recommends everyone who simulates or measures RF/microwave devices to
    get a copy.
+
+   **PyBERT.** It's another circuit simulator designed with time-domain
+   S-parameter simulation and signal integrity in mind, developed by David
+   Banas. See [23]_.
 
 Install
 ''''''''
@@ -3761,3 +3765,6 @@ Bibliography
 
 .. [22] Brian Walker. `Make Accurate Impedance Measurements Using a VNA
    <https://www.mwrf.com/technologies/test-measurement/article/21849791/copper-mountain-technologies-make-accurate-impedance-measurements-using-a-vna>`_, in Microwave & RF website.
+
+.. [23] PyBERT. `Project Repository.
+   <https://github.com/capn-freako/PyBERT>`_
